@@ -1,4 +1,4 @@
-import { _decorator, CCInteger, Component, UITransform, input, Node, Input, EventKeyboard, KeyCode, director, Contact2DType, Collider2D, IPhysics2DContact, Canvas, PhysicsSystem2D, BoxCollider2D } from 'cc';
+import { _decorator, CCInteger, Component, UITransform, input, Node, Input, EventKeyboard, KeyCode, director, Contact2DType, Collider2D, IPhysics2DContact, Canvas, PhysicsSystem2D, BoxCollider2D, Sprite } from 'cc';
 const { ccclass, property } = _decorator;
 import { Background } from './Background';
 import { Results } from './Results';
@@ -34,27 +34,35 @@ export class GameCtrl extends Component {
     public result: Results
 
     public isOver: boolean;
+    public firstJump: boolean;
 
     onLoad() {
         this.initListener();
 
         this.result.resetScore();
         this.isOver = true;
+        this.firstJump = false;
         director.pause();
     }
 
     initListener() {
         //input.on(Input.EventType.KEY_DOWN, this.onKeyDown, this);
 
-        this.node.on(Node.EventType.TOUCH_START, ()=> {
+        this.node.on(Node.EventType.TOUCH_START, (e)=> {
 
-            // if (this.isOver == true) {
-            //     this.resetGame();
-            //     this.fzd.resetFzd();
-            //     this.startGame();
-            // }
-            if (this.isOver == false) {
+            if (this.isOver == true) {
+                this.resetGame();
+                this.fzd.resetFzd();
+                this.startGame();
                 this.fzd.fly();
+            }
+            else {
+                const scene = director.getScene();
+                const canvas = scene.getComponentInChildren(Canvas);
+                let mouseX = e.touch.getLocationX() - (canvas.getComponent(UITransform).width / 2);
+                console.log("locationX: ", mouseX);
+                this.fzd.moveTo(Math.max(Math.min(mouseX, canvas.getComponent(UITransform).width / 2), - canvas.getComponent(UITransform).width / 2));
+            
             }
             // todo: move
         })
@@ -64,12 +72,13 @@ export class GameCtrl extends Component {
                 this.resetGame();
                 this.fzd.resetFzd();
                 this.startGame();
+                this.fzd.fly();
             }
             else {
                 const scene = director.getScene();
                 const canvas = scene.getComponentInChildren(Canvas);
                 let mouseX = e.touch.getLocationX() - (canvas.getComponent(UITransform).width / 2);
-                console.log("locationX: ", mouseX);
+                // console.log("locationX: ", mouseX);
                 // if (mouseX > this.fzd.fzdLocation.x) {
                 //     this.fzd.moveHorizonal(10);
                 // }
@@ -105,6 +114,7 @@ export class GameCtrl extends Component {
         this.result.resetScore();
         this.starQueue.resetPool();
         this.isOver = false;
+        this.firstJump = false;
         this.startGame();
     }
 
@@ -131,9 +141,28 @@ export class GameCtrl extends Component {
     }
 
     onBeginContact(selfCollider: Collider2D, otherCollider: Collider2D, contact: IPhysics2DContact | null) {
-        
-        if (otherCollider.tag == 1) {
-            this.fzd.hitGround = true;
+        console.log("collider node: ", otherCollider.node.isValid);
+        if (otherCollider.node.isValid){
+            let colliderTag = otherCollider.tag;
+            if (colliderTag == 1) { // ground
+                this.fzd.hitGround = true;
+            }
+            else if (colliderTag == 2){ //star
+                console.log("collider node: ", otherCollider.node.isValid);
+                setTimeout(function() {
+                    if (otherCollider && otherCollider.node.isValid) {
+                        // let sprite = otherCollider.getComponent(Sprite);
+                        // sprite.destroy();
+                        console.log("destroy node");
+                        otherCollider.node.destroy();
+                    }
+                }.bind(otherCollider), 0);
+                // if (otherCollider.node.isValid) {
+                //     otherCollider.node.destroy();
+                // }
+                this.result.addScore();
+                this.fzd.fly();
+            }
         }
     }
 

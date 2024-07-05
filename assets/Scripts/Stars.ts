@@ -1,4 +1,4 @@
-import { _decorator, Component, Node, Vec3, screen, find, UITransform } from 'cc';
+import { _decorator, Component, Node, Vec3, screen, find, UITransform, director, Canvas, Collider2D, BoxCollider2D } from 'cc';
 const { ccclass, property } = _decorator;
 
 const random = (min, max) => {
@@ -14,7 +14,6 @@ export class Stars extends Component {
     public star1: Node; // node in vector?
 
     public tempStartLocationStar1: Vec3 = new Vec3(0, 0, 0); // the higher score, the less stars
-    public scene = screen.windowSize;
 
     public game;
     public starSpeed: number; // star speed, always the same as the fzd speed
@@ -27,10 +26,16 @@ export class Stars extends Component {
     }
 
     initPos() {
-        this.tempStartLocationStar1.x = random(0, this.scene.width);//according to difficult level
-        this.tempStartLocationStar1.y = random(0, this.scene.height);
-        console.log("star created");
-        console.log(this.tempStartLocationStar1);
+        const scene = director.getScene();
+        const canvas = scene.getComponentInChildren(Canvas);
+        const collisionSize = this.getComponentInChildren(BoxCollider2D).size;
+        let randomX = canvas.getComponent(UITransform).width / 2;
+        let randomY = canvas.getComponent(UITransform).height / 2;
+        // this.tempStartLocationStar1.x = 80;// according to difficult level
+        // this.tempStartLocationStar1.y  = 50;
+        this.tempStartLocationStar1.x = random(- randomX, randomX - collisionSize.width);
+        this.tempStartLocationStar1.y = random(-randomY, randomY);
+        console.log("star created:", this.tempStartLocationStar1);
 
         this.star1.setPosition(this.tempStartLocationStar1);
     }
@@ -51,5 +56,6 @@ export class Stars extends Component {
         }
 
     }
+// maybe should write destroy function
 }
 

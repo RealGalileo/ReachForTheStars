@@ -7,7 +7,7 @@ export class Fzd extends Component {
         type: CCFloat,
         tooltip: 'how high fzd can fly' // maybe can add how high he can fly
     })
-    public jumpHeight: number = 3.5;
+    public jumpHeight: number = 5;
 
     @property({
         type: CCFloat,
