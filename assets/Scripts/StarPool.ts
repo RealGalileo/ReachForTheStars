@@ -19,12 +19,11 @@ export class StarPool extends Component {
     public createStar;
 
     initPool() {
-        let initCount = 5;
+        let initCount = 6;
 
         for (let i = 0; i < initCount; i++) {
             this.createStar = instantiate(this.prefabStars);
-
-            if (i <= 1) {
+            if (i <= 5) {
                 this.starPoolHome.addChild(this.createStar);
             }
             else {
@@ -40,6 +39,7 @@ export class StarPool extends Component {
         else{
             this.createStar = instantiate(this.prefabStars);
         }
+        console.log("create stars add pool");
 
         this.starPoolHome.addChild(this.createStar);
     }

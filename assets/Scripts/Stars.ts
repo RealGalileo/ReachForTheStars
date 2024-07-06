@@ -5,6 +5,8 @@ const random = (min, max) => {
     return Math.random() * (max - min) + min;
 }
 
+let numOfStars = 0;
+
 @ccclass('Stars')
 export class Stars extends Component {
     @property({
@@ -19,24 +21,40 @@ export class Stars extends Component {
     public starSpeed: number; // star speed, always the same as the fzd speed
     public tempSpeed: number;
 
+    public screenSize = screen.windowSize;
+    public constPotion = this.screenSize.height / 6;
+
     onLoad() {
         this.game = find("GameCtrl").getComponent("GameCtrl");
         this.starSpeed = this.game.starsSpeed;
-        this.initPos();
+        this.initPos(numOfStars);
+        numOfStars++;
+        console.log("numofStars: ", numOfStars);
     }
 
-    initPos() {
-        const scene = director.getScene();
-        const canvas = scene.getComponentInChildren(Canvas);
+    initPos(starsNum) {
+        let randomY;
         const collisionSize = this.getComponentInChildren(BoxCollider2D).size;
-        let randomX = canvas.getComponent(UITransform).width / 2;
-        let randomY = canvas.getComponent(UITransform).height / 2;
-        // this.tempStartLocationStar1.x = 80;// according to difficult level
-        // this.tempStartLocationStar1.y  = 50;
-        this.tempStartLocationStar1.x = random(- randomX, randomX - collisionSize.width);
-        this.tempStartLocationStar1.y = random(-randomY, randomY);
-        console.log("star created:", this.tempStartLocationStar1);
+        let randomX = random( - this.screenSize.width / 2, this.screenSize.width / 2 - collisionSize.width);
 
+        if (starsNum <= 5) {
+            // const lowestY = 250;
+            // let randomX = this.screenSize.width / 2;
+            // let randomY = this.screenSize.height / 2;
+            // this.tempStartLocationStar1.x = -320;// according to difficult level
+            // this.tempStartLocationStar1.y = -480;
+            // this.tempStartLocationStar1.x = random(- randomX, randomX - collisionSize.width);
+            // this.tempStartLocationStar1.y = random(-randomY + 150, randomY);
+
+            randomY = random(- this.screenSize.height / 2 + starsNum * this.constPotion, - this.screenSize.height / 2 + (1 + starsNum) * this.constPotion);
+        }
+        else {
+            randomY = random(this.screenSize.height / 2, this.screenSize.height / 2 + 100);
+        }
+
+        this.tempStartLocationStar1.x = randomX;
+        this.tempStartLocationStar1.y = randomY;
+        console.log("star created:", this.tempStartLocationStar1);
         this.star1.setPosition(this.tempStartLocationStar1);
     }
 

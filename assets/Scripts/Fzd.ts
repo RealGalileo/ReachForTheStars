@@ -19,7 +19,7 @@ export class Fzd extends Component {
         type: CCFloat,
         tooltip: 'horizonal move speed' 
     })
-    public horizonalSpeed: number = 200;
+    public horizonalSpeed: number = 10;
 
     public fzdAnimation: Animation;
     public fzdLocation: Vec3;
@@ -53,7 +53,7 @@ export class Fzd extends Component {
     }
 
     moveTo(destination: number) {
-        console.log("location: ", this.node.position);
+        //console.log("location: ", this.node.position);
         this.fzdAnimation.stop();
 
         tween(this.node.position)
@@ -61,14 +61,13 @@ export class Fzd extends Component {
             {
                 easing:'smooth',
                 onUpdate:(target: Vec3, ratio: number)=>{
-                    this.node.position = target;
+                    this.node.position = target; // add
                 }
             })
             .start();
     }
 
     moveHorizonal(direction: number) {
-        // console.log("location: ", this.fzdLocation);
         this.fzdAnimation.stop();
 
         tween(this.node.position)

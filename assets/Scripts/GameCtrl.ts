@@ -154,6 +154,8 @@ export class GameCtrl extends Component {
                         // let sprite = otherCollider.getComponent(Sprite);
                         // sprite.destroy();
                         console.log("destroy node");
+                        let curStar = otherCollider.node;
+                        // this.starQueue.pool.put(curStar);
                         otherCollider.node.destroy();
                     }
                 }.bind(otherCollider), 0);
@@ -162,6 +164,9 @@ export class GameCtrl extends Component {
                 // }
                 this.result.addScore();
                 this.fzd.fly();
+                setTimeout(function() {
+                    this.createStar();
+                }.bind(this), 0)
             }
         }
     }
