@@ -5,15 +5,15 @@ const { ccclass, property } = _decorator;
 export class Fzd extends Component {
     @property({
         type: CCFloat,
-        tooltip: 'how high fzd can fly' // maybe can add how high he can fly
+        tooltip: 'how high fzd can fly' 
     })
-    public jumpHeight: number = 5;
+    public jumpHeight: number = 10;
 
     @property({
         type: CCFloat,
         tooltip: 'how long fzd can fly' 
     })
-    public jumpDuration: number = 3.5;
+    public jumpDuration: number = 5;
 
     @property({
         type: CCFloat,

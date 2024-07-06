@@ -13,20 +13,17 @@ export class Stars extends Component {
         type: Node,
         tooltip: 'star'
     })
-    public star1: Node; // node in vector?
+    public star1: Node; 
 
     public tempStartLocationStar1: Vec3 = new Vec3(0, 0, 0); // the higher score, the less stars
 
     public game;
-    public starSpeed: number; // star speed, always the same as the fzd speed
-    public tempSpeed: number;
 
     public screenSize = screen.windowSize;
     public constPotion = this.screenSize.height / 6;
 
     onLoad() {
         this.game = find("GameCtrl").getComponent("GameCtrl");
-        this.starSpeed = this.game.starsSpeed;
         this.initPos(numOfStars);
         numOfStars++;
         console.log("numofStars: ", numOfStars);
@@ -59,17 +56,17 @@ export class Stars extends Component {
     }
 
     update(deltaTime) {
-        this.tempSpeed = this.starSpeed * deltaTime;
-        this.tempStartLocationStar1 = this.star1.position;
-        this.tempStartLocationStar1.y -= this.tempSpeed;
-        this.star1.setPosition(this.tempStartLocationStar1);
+        // this.tempSpeed = this.starSpeed * deltaTime;
+        // this.tempStartLocationStar1 = this.star1.position;
+        // this.tempStartLocationStar1.y -= this.tempSpeed;
+        // this.star1.setPosition(this.tempStartLocationStar1);
 
         // if(touched) {
         //     this.game.getStar();
         //     this.destroy();
         // }
 
-        if(this.star1.position.y <= 0) {
+        if(this.star1.getPosition().y <= 0) {
             this.destroy();
         }
 

@@ -180,6 +180,7 @@ export class GameCtrl extends Component {
     }
 
     update() {
+        //console.log(this.fzd.node.getPosition());
         if (this.isOver == false) {
             this.fzdStruck();
         }
