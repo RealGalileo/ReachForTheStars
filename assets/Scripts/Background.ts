@@ -78,7 +78,7 @@ export class Background extends Component {
         const halfScreenSizeY = screenSize.y / 2;
         // const diff = (screenSize.height - this.bgHeight1) / 2;
         const diff = cameraBaseline - halfScreenSizeY;
-        console.log("cameraBaseline, screenSize: ", cameraBaseline, screenSize);
+        // console.log("cameraBaseline, screenSize: ", cameraBaseline, screenSize);
         
 
         // this.tempStartLocation1.y -= this.gameSpeed * deltaTime;
@@ -104,7 +104,7 @@ export class Background extends Component {
             console.log("resetbg3", this.tempStartLocation3);
         }
 
-        console.log("bgs: ", this.tempStartLocation1, this.tempStartLocation2, this.tempStartLocation3);
+        // console.log("bgs: ", this.tempStartLocation1, this.tempStartLocation2, this.tempStartLocation3);
 
         this.bg1.setPosition(this.tempStartLocation1);
         this.bg2.setPosition(this.tempStartLocation2);

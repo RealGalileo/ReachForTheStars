@@ -18,7 +18,7 @@ export class cameraCtrl extends Component {
         targetPos.z = 1000;
 
         currentPos.lerp(targetPos, 0.1);
-        console.log(currentPos);
+        // console.log(currentPos);
 
         this.node.setPosition(currentPos);
     }

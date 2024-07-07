@@ -7,7 +7,7 @@ export class Fzd extends Component {
         type: CCFloat,
         tooltip: 'how high fzd can fly' 
     })
-    public jumpHeight: number = 10;
+    public jumpHeight: number = 350;
 
     @property({
         type: CCFloat,
@@ -32,7 +32,7 @@ export class Fzd extends Component {
     }
 
     resetFzd() {
-        this.fzdLocation = new Vec3(0, 0, 0);
+        this.fzdLocation = new Vec3(0, -366, 0);
 
         this.node.setPosition(this.fzdLocation);
         this.hitGround = false;

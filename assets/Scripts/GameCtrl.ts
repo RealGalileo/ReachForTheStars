@@ -145,6 +145,7 @@ export class GameCtrl extends Component {
 
     onBeginContact(selfCollider: Collider2D, otherCollider: Collider2D, contact: IPhysics2DContact | null) {
         //console.log("collider node: ", otherCollider.node.isValid);
+        console.log("collider tag: ", otherCollider.tag);
         if (otherCollider.node.isValid){
             let colliderTag = otherCollider.tag;
             if (colliderTag == 1) { // ground
