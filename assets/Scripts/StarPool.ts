@@ -1,7 +1,7 @@
 import { _decorator, Camera, Component, instantiate, Node, NodePool, Prefab } from 'cc';
 const { ccclass, property } = _decorator;
 
-import { Stars, setcameraBaseline } from './Stars';
+import { Stars } from './Stars';
 
 @ccclass('StarPool')
 export class StarPool extends Component {
