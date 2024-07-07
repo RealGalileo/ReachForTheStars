@@ -4,6 +4,8 @@ import { Background } from './Background';
 import { Results } from './Results';
 import { Fzd } from './Fzd';
 import { StarPool } from './StarPool';
+import { resetNimOfStars } from './Stars';
+
 
 @ccclass('GameCtrl')
 export class GameCtrl extends Component {
@@ -112,6 +114,7 @@ export class GameCtrl extends Component {
 
     resetGame() {
         this.result.resetScore();
+        resetNimOfStars();
         this.starQueue.resetPool();
         this.isOver = false;
         this.firstJump = false;
@@ -141,14 +144,14 @@ export class GameCtrl extends Component {
     }
 
     onBeginContact(selfCollider: Collider2D, otherCollider: Collider2D, contact: IPhysics2DContact | null) {
-        console.log("collider node: ", otherCollider.node.isValid);
+        //console.log("collider node: ", otherCollider.node.isValid);
         if (otherCollider.node.isValid){
             let colliderTag = otherCollider.tag;
             if (colliderTag == 1) { // ground
                 this.fzd.hitGround = true;
             }
             else if (colliderTag == 2){ //star
-                console.log("collider node: ", otherCollider.node.isValid);
+                //console.log("collider node: ", otherCollider.node.isValid);
                 setTimeout(function() {
                     if (otherCollider && otherCollider.node.isValid) {
                         // let sprite = otherCollider.getComponent(Sprite);

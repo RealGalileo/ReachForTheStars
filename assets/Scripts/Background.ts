@@ -1,4 +1,4 @@
-import { _decorator, Component, Node, UITransform, Vec3, director, Canvas, Collider2D, screen } from 'cc';
+import { _decorator, Component, Node, UITransform, Vec3, director, Canvas, Collider2D, screen, Camera } from 'cc';
 const { ccclass, property } = _decorator;
 
 import { GameCtrl } from './GameCtrl';
@@ -23,6 +23,11 @@ export class Background extends Component {
         tooltip: 'bg 3'
     })
     public bg3: Node
+
+    @property({
+        type: Camera
+    })
+    public camera: Camera;
 
     public bgHeight1: number;
     public bgHeight2: number;
@@ -63,38 +68,43 @@ export class Background extends Component {
 
     update(deltaTime: number) {
 
-        this.gameSpeed = this.gameCtrlSpeed.speed;
+        //this.gameSpeed = this.gameCtrlSpeed.speed;
+        let cameraBaseline = this.camera.node.getPosition().y;
 
         this.tempStartLocation1 = this.bg1.position;
         this.tempStartLocation2 = this.bg2.position;
         this.tempStartLocation3 = this.bg3.position;
         const screenSize = screen.windowSize;
-        const diff = (screenSize.height - this.bgHeight1) / 2;
-        //console.log("screenSize: ", screenSize);
+        const halfScreenSizeY = screenSize.y / 2;
+        // const diff = (screenSize.height - this.bgHeight1) / 2;
+        const diff = cameraBaseline - halfScreenSizeY;
+        console.log("cameraBaseline, screenSize: ", cameraBaseline, screenSize);
         
 
-        this.tempStartLocation1.y -= this.gameSpeed * deltaTime;
-        this.tempStartLocation2.y -= this.gameSpeed * deltaTime;
-        this.tempStartLocation3.y -= this.gameSpeed * deltaTime;
+        // this.tempStartLocation1.y -= this.gameSpeed * deltaTime;
+        // this.tempStartLocation2.y -= this.gameSpeed * deltaTime;
+        // this.tempStartLocation3.y -= this.gameSpeed * deltaTime;
 
         const scene = director.getScene();
         const canvas = scene.getComponentInChildren(Canvas);
 
 
-        if (this.tempStartLocation1.y <= (0 - this.bgHeight1 - diff)) {
+        if (this.tempStartLocation1.y <= (cameraBaseline - halfScreenSizeY - this.bgHeight1)) {
             this.tempStartLocation1.y = this.bgHeight2 + this.bgHeight3 - diff;
             console.log("resetbg1", this.tempStartLocation1);
         }
 
-        if (this.tempStartLocation2.y <= (0 - this.bgHeight2 - diff)) {
+        if (this.tempStartLocation2.y <= (cameraBaseline - halfScreenSizeY - this.bgHeight2)) {
             this.tempStartLocation2.y = this.bgHeight1 + this.bgHeight3 - diff;
             console.log("resetbg2", this.tempStartLocation2);
         }
 
-        if (this.tempStartLocation3.y <= (0 - this.bgHeight3 - diff)) {
+        if (this.tempStartLocation3.y <= (cameraBaseline - halfScreenSizeY - this.bgHeight3)) {
             this.tempStartLocation3.y = this.bgHeight1 + this.bgHeight2 - diff;
             console.log("resetbg3", this.tempStartLocation3);
         }
+
+        console.log("bgs: ", this.tempStartLocation1, this.tempStartLocation2, this.tempStartLocation3);
 
         this.bg1.setPosition(this.tempStartLocation1);
         this.bg2.setPosition(this.tempStartLocation2);

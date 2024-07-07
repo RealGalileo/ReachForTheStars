@@ -397,7 +397,7 @@
     "_id": "63WIch3o5BEYRlXzTT0oWc"
   },
   {
-    "__type__": "764d1MD/XBMC6LLnGXEcult",
+    "__type__": "7176b1RVQZJgJLbNuLbYAXY",
     "_name": "",
     "_objFlags": 0,
     "__editorExtras__": {},
@@ -409,7 +409,7 @@
     "fzd": {
       "__id__": 5
     },
-    "_id": "09bwWZkUxOmpPgGEZrWjV+"
+    "_id": "97zR+QLU5Gm4jch7/iaaL3"
   },
   {
     "__type__": "cc.Node",
@@ -836,6 +836,9 @@
     },
     "bg3": {
       "__id__": 18
+    },
+    "camera": {
+      "__id__": 9
     },
     "_id": "69QAnGnH1LL6NZwy3tNwZA"
   },
@@ -1430,8 +1433,8 @@
     "__prefab": null,
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 20.623704793867372,
-      "height": 50.4
+      "width": 20.62344136211158,
+      "height": 50.400000000000006
     },
     "_anchorPoint": {
       "__type__": "cc.Vec2",
@@ -1463,7 +1466,7 @@
     "_string": "0",
     "_horizontalAlign": 1,
     "_verticalAlign": 1,
-    "_actualFontSize": 79.875,
+    "_actualFontSize": 66.375,
     "_fontSize": 60,
     "_fontFamily": "Arial",
     "_lineHeight": 40,
@@ -1542,8 +1545,8 @@
     "__prefab": null,
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 279.1231110622066,
-      "height": 50.4
+      "width": 279.11954890536725,
+      "height": 50.400000000000006
     },
     "_anchorPoint": {
       "__type__": "cc.Vec2",
@@ -1575,7 +1578,7 @@
     "_string": "High Score: 0",
     "_horizontalAlign": 1,
     "_verticalAlign": 1,
-    "_actualFontSize": 79.875,
+    "_actualFontSize": 66.375,
     "_fontSize": 60,
     "_fontFamily": "Arial",
     "_lineHeight": 40,
@@ -1676,8 +1679,8 @@
     "__prefab": null,
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 181.74639634683098,
-      "height": 50.4
+      "width": 181.7440744173729,
+      "height": 50.400000000000006
     },
     "_anchorPoint": {
       "__type__": "cc.Vec2",
@@ -1709,7 +1712,7 @@
     "_string": "Try Again",
     "_horizontalAlign": 1,
     "_verticalAlign": 1,
-    "_actualFontSize": 79.875,
+    "_actualFontSize": 66.375,
     "_fontSize": 60,
     "_fontFamily": "Arial",
     "_lineHeight": 40,
@@ -1768,6 +1771,9 @@
     },
     "resultEnd": {
       "__id__": 46
+    },
+    "camera": {
+      "__id__": 9
     },
     "_id": "cb47iqmoVGrajEKpPSzF1P"
   },
@@ -1857,6 +1863,9 @@
     },
     "starPoolHome": {
       "__id__": 49
+    },
+    "camera": {
+      "__id__": 9
     },
     "_id": "26clkZlY9HzJPq++dIeQ7O"
   },
@@ -2089,7 +2098,7 @@
     "asset": null,
     "fileId": "4ba2e86a-ca9d-45d6-b84c-5e5f13425832",
     "instance": null,
-    "targetOverrides": null
+    "targetOverrides": []
   },
   {
     "__type__": "cc.SceneGlobals",

@@ -1,11 +1,18 @@
 import { _decorator, Component, Node, Vec3, screen, find, UITransform, director, Canvas, Collider2D, BoxCollider2D } from 'cc';
 const { ccclass, property } = _decorator;
+import { Fzd } from './Fzd';
 
 const random = (min, max) => {
     return Math.random() * (max - min) + min;
 }
 
 let numOfStars = 0;
+
+export function resetNimOfStars() {
+    numOfStars = 0;
+}
+
+let highestStarY = 0;
 
 @ccclass('Stars')
 export class Stars extends Component {
@@ -33,6 +40,7 @@ export class Stars extends Component {
         let randomY;
         const collisionSize = this.getComponentInChildren(BoxCollider2D).size;
         let randomX = random( - this.screenSize.width / 2, this.screenSize.width / 2 - collisionSize.width);
+        let halfScreenSizeY = this.screenSize.height / 2;
 
         if (starsNum <= 5) {
             // const lowestY = 250;
@@ -43,14 +51,16 @@ export class Stars extends Component {
             // this.tempStartLocationStar1.x = random(- randomX, randomX - collisionSize.width);
             // this.tempStartLocationStar1.y = random(-randomY + 150, randomY);
 
-            randomY = random(- this.screenSize.height / 2 + starsNum * this.constPotion, - this.screenSize.height / 2 + (1 + starsNum) * this.constPotion);
+            randomY = random(- halfScreenSizeY + starsNum * this.constPotion, - halfScreenSizeY + (1 + starsNum) * this.constPotion);
         }
         else {
-            randomY = random(this.screenSize.height / 2, this.screenSize.height / 2 + 100);
+            randomY = random(0, 100);
+            randomY = highestStarY + randomY;
         }
 
         this.tempStartLocationStar1.x = randomX;
         this.tempStartLocationStar1.y = randomY;
+        highestStarY = Math.max(highestStarY, randomY);
         console.log("star created:", this.tempStartLocationStar1);
         this.star1.setPosition(this.tempStartLocationStar1);
     }
@@ -66,9 +76,6 @@ export class Stars extends Component {
         //     this.destroy();
         // }
 
-        if(this.star1.getPosition().y <= 0) {
-            this.destroy();
-        }
 
     }
 // maybe should write destroy function

@@ -316,6 +316,7 @@
     "star1": {
       "__id__": 2
     },
+    "fzd": null,
     "_id": ""
   },
   {
@@ -331,7 +332,6 @@
       "__id__": 0
     },
     "fileId": "a3P/N4/oFPcI2ypbK9YR6S",
-    "instance": null,
     "targetOverrides": null
   }
 ]
