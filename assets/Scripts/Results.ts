@@ -36,6 +36,7 @@ export class Results extends Component {
     resetScore() {
         this.updateScore(0);
         this.hideResults();
+        // this.curLabel.node.active = true;
     }
 
     addScore() {
@@ -58,10 +59,12 @@ export class Results extends Component {
 
     update() {
         let screenSize = screen.windowSize;
-        let curPosY = Math.max(screenSize.y / 2 - 30, this.camera.node.getPosition().y + screenSize.y / 2 - 30)
+        // let curPosY = Math.max(screenSize.y / 2 - 30, this.camera.node.getPosition().y + screenSize.y / 2 - 30);
+        let curPosY = this.camera.node.getPosition().y + 500;
         let newPos = this.curLabel.node.getPosition();
         newPos.y = curPosY;
         this.curLabel.node.setPosition(newPos);
+        // console.log("curlabel position, isActive: ", newPos, this.curLabel.node.active)
     }
 }
 

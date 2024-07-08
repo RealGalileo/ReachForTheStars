@@ -14,6 +14,10 @@ export function resetNimOfStars() {
 
 let highestStarY = 0;
 
+export function resetHighestStarY() {
+    highestStarY = 0;
+}
+
 @ccclass('Stars')
 export class Stars extends Component {
     @property({
@@ -28,7 +32,8 @@ export class Stars extends Component {
 
     public starAnimation: Animation;
 
-    public screenSize = screen.windowSize;
+    // public screenSize = screen.windowSize;
+    public screenSize = {height: 960, width: 640};
     public constPotion = this.screenSize.height / 8;
 
     onLoad() {
@@ -50,7 +55,7 @@ export class Stars extends Component {
     initPos(starsNum) {
         let randomY;
         const collisionWid = 80;
-        // console.log("screenSize", this.screenSize);
+        console.log("screenSize", this.screenSize);
         let randomX = random( - this.screenSize.width / 2 + collisionWid, this.screenSize.width / 2 - collisionWid);
         let halfScreenSizeY = this.screenSize.height / 2;
 
@@ -58,7 +63,7 @@ export class Stars extends Component {
             randomY = random(- halfScreenSizeY + (3 + starsNum) * this.constPotion, - halfScreenSizeY + (4 + starsNum) * this.constPotion);
         }
         else {
-            randomY = random(0, 100);
+            randomY = random(40, 100);
             randomY = highestStarY + randomY;
         }
 

@@ -24,15 +24,21 @@ export class Fzd extends Component {
     public fzdAnimation: Animation;
     public fzdLocation: Vec3;
     public hitGround: boolean;
+    public jmpLeft;
+    public jmpRight;
+    public turnRight;
+    public turnLeft;
+    public isLeft: boolean = true;
 
     onLoad() {
         this.resetFzd();
 
         this.fzdAnimation = this.getComponent(Animation);
+        [this.jmpLeft, this.jmpRight, this.turnRight, this.turnLeft] = this.fzdAnimation.clips;
     }
 
     resetFzd() {
-        this.fzdLocation = new Vec3(0, -366, 0);
+        this.fzdLocation = new Vec3(0, -338, 0);
 
         this.node.setPosition(this.fzdLocation);
         this.hitGround = false;
@@ -49,7 +55,18 @@ export class Fzd extends Component {
             })
             .start();
         
-            this.fzdAnimation.play();
+        this.fzdAnimation.play();
+    }
+
+    turnAround(turnleft: boolean) { // false: turnRight, true: turnLeft
+        this.fzdAnimation.stop();
+        if (!turnleft == this.isLeft) {
+            let playClip = turnleft ? this.turnLeft.name : this.turnRight.name;
+            console.log("playClip: ", playClip);
+            this.fzdAnimation.play(playClip);
+            this.isLeft = !this.isLeft;
+            // console.log("animate State: ", animState);
+        }
     }
 
     moveTo(destination: number) {

@@ -4,7 +4,7 @@ import { Background } from './Background';
 import { Results } from './Results';
 import { Fzd } from './Fzd';
 import { StarPool } from './StarPool';
-import { resetNimOfStars } from './Stars';
+import { resetNimOfStars, resetHighestStarY } from './Stars';
 
 
 @ccclass('GameCtrl')
@@ -63,8 +63,18 @@ export class GameCtrl extends Component {
                 const canvas = scene.getComponentInChildren(Canvas);
                 let mouseX = e.touch.getLocationX() - (canvas.getComponent(UITransform).width / 2);
                 console.log("locationX: ", mouseX);
+                let fzdCurPosX = this.fzd.node.getPosition().x;
+                console.log("mouseX, fzdPosX: ", mouseX, fzdCurPosX);
+                if (fzdCurPosX > mouseX) {
+                    this.fzd.turnAround(true);
+                    console.log("trunleft");
+                }
+                else {
+                    this.fzd.turnAround(false);
+                    console.log("trunright");
+                }
+                
                 this.fzd.moveTo(Math.max(Math.min(mouseX, canvas.getComponent(UITransform).width / 2), - canvas.getComponent(UITransform).width / 2));
-            
             }
             // todo: move
         })
@@ -80,6 +90,16 @@ export class GameCtrl extends Component {
                 const scene = director.getScene();
                 const canvas = scene.getComponentInChildren(Canvas);
                 let mouseX = e.touch.getLocationX() - (canvas.getComponent(UITransform).width / 2);
+                let fzdCurPosX = this.fzd.node.getPosition().x;
+                console.log("mouseX, fzdPosX: ", mouseX, fzdCurPosX);
+                if (fzdCurPosX > mouseX) {
+                    this.fzd.turnAround(true);
+                    console.log("trunleft");
+                }
+                else {
+                    this.fzd.turnAround(false);
+                    console.log("trunright");
+                }
                 // console.log("locationX: ", mouseX);
                 // if (mouseX > this.fzd.fzdLocation.x) {
                 //     this.fzd.moveHorizonal(10);
@@ -115,6 +135,7 @@ export class GameCtrl extends Component {
     resetGame() {
         this.result.resetScore();
         resetNimOfStars();
+        resetHighestStarY();
         this.starQueue.resetPool();
         this.isOver = false;
         this.firstJump = false;
@@ -168,6 +189,7 @@ export class GameCtrl extends Component {
                 // }
                 this.result.addScore();
                 this.fzd.fly();
+                //this.getStar();
                 setTimeout(function() {
                     this.createStar();
                 }.bind(this), 0)
