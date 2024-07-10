@@ -1,5 +1,6 @@
 import { _decorator, Component, misc, Node, Vec3 } from 'cc';
 import { Fzd } from './Fzd';
+import { Ground } from './Ground';
 const { ccclass, property } = _decorator;
 
 @ccclass('cameraCtrl')
@@ -8,6 +9,15 @@ export class cameraCtrl extends Component {
         type: Fzd
     })
     public fzd: Fzd;
+
+    onload() {
+        this.resetPos();
+    }
+
+    resetPos() {
+        let newPos = new Vec3(0, 0, 0);
+        this.node.setPosition(newPos);
+    }
 
     update(deltaTime: number) {
         let targetPos = this.fzd.node.getPosition();

@@ -1,10 +1,12 @@
-import { _decorator, CCInteger, Component, UITransform, input, Node, Input, EventKeyboard, KeyCode, director, Contact2DType, Collider2D, IPhysics2DContact, Canvas, PhysicsSystem2D, BoxCollider2D, Sprite } from 'cc';
+import { _decorator, CCInteger, Component, UITransform, input, Node, Input, EventKeyboard, KeyCode, director, Contact2DType, Collider2D, IPhysics2DContact, Canvas, PhysicsSystem2D, BoxCollider2D, Sprite, Camera, isValid } from 'cc';
 const { ccclass, property } = _decorator;
 import { Background } from './Background';
 import { Results } from './Results';
 import { Fzd } from './Fzd';
 import { StarPool } from './StarPool';
-import { resetNimOfStars, resetHighestStarY } from './Stars';
+import { resetNimOfStars, resetHighestStarY, setCurScore, Stars } from './Stars';
+import { Ground } from './Ground';
+import { cameraCtrl } from './CameraCtrl';
 
 
 @ccclass('GameCtrl')
@@ -15,9 +17,24 @@ export class GameCtrl extends Component {
     public speed: number = 300;
 
     @property({
+        type: Ground
+    })
+    public ground: Ground;
+
+    @property({
+        type: Background
+    })
+    public bg: Background;
+
+    @property({
+        type: cameraCtrl
+    })
+    public cam: cameraCtrl;
+
+    @property({
         type: CCInteger
     })
-    public starsSpeed: number = 200;//the same as fzd
+    public starsSpeed: number = 200;
 
     @property({
         type: Fzd
@@ -48,9 +65,8 @@ export class GameCtrl extends Component {
     }
 
     initListener() {
-        //input.on(Input.EventType.KEY_DOWN, this.onKeyDown, this);
 
-        this.node.on(Node.EventType.TOUCH_START, (e)=> {
+        input.on(Input.EventType.TOUCH_START, (e)=> {
 
             if (this.isOver == true) {
                 this.resetGame();
@@ -62,24 +78,23 @@ export class GameCtrl extends Component {
                 const scene = director.getScene();
                 const canvas = scene.getComponentInChildren(Canvas);
                 let mouseX = e.touch.getLocationX() - (canvas.getComponent(UITransform).width / 2);
-                console.log("locationX: ", mouseX);
+                //console.log("locationX: ", mouseX);
                 let fzdCurPosX = this.fzd.node.getPosition().x;
-                console.log("mouseX, fzdPosX: ", mouseX, fzdCurPosX);
+                //console.log("mouseX, fzdPosX: ", mouseX, fzdCurPosX);
                 if (fzdCurPosX > mouseX) {
                     this.fzd.turnAround(true);
-                    console.log("trunleft");
+                    //console.log("trunleft");
                 }
                 else {
                     this.fzd.turnAround(false);
-                    console.log("trunright");
+                    //console.log("trunright");
                 }
                 
                 this.fzd.moveTo(Math.max(Math.min(mouseX, canvas.getComponent(UITransform).width / 2), - canvas.getComponent(UITransform).width / 2));
             }
-            // todo: move
         })
 
-        this.node.on(Node.EventType.TOUCH_MOVE, (e)=>{
+        input.on(Input.EventType.TOUCH_MOVE, (e)=>{
             if (this.isOver == true) {
                 this.resetGame();
                 this.fzd.resetFzd();
@@ -91,14 +106,14 @@ export class GameCtrl extends Component {
                 const canvas = scene.getComponentInChildren(Canvas);
                 let mouseX = e.touch.getLocationX() - (canvas.getComponent(UITransform).width / 2);
                 let fzdCurPosX = this.fzd.node.getPosition().x;
-                console.log("mouseX, fzdPosX: ", mouseX, fzdCurPosX);
+                //console.log("mouseX, fzdPosX: ", mouseX, fzdCurPosX);
                 if (fzdCurPosX > mouseX) {
                     this.fzd.turnAround(true);
-                    console.log("trunleft");
+                    //console.log("trunleft");
                 }
                 else {
                     this.fzd.turnAround(false);
-                    console.log("trunright");
+                    //console.log("trunright");
                 }
                 // console.log("locationX: ", mouseX);
                 // if (mouseX > this.fzd.fzdLocation.x) {
@@ -112,20 +127,6 @@ export class GameCtrl extends Component {
         })
     }
 
-    // onKeyDown(event: EventKeyboard) {
-    //     switch(event.keyCode){
-    //         case KeyCode.KEY_A:
-    //             this.gameOver();
-    //         break;
-    //         case KeyCode.KEY_P:
-    //             this.result.addScore();
-    //         break;
-    //         case KeyCode.KEY_Q:
-    //             this.resetGame();
-    //             this.fzd.resetFzd();
-    //     }
-    // }
-
     gameOver() {
         this.result.showResults();
         this.isOver = true;
@@ -136,6 +137,10 @@ export class GameCtrl extends Component {
         this.result.resetScore();
         resetNimOfStars();
         resetHighestStarY();
+        setCurScore(0);
+        this.ground.resetPos();
+        this.bg.startUp();
+        this.cam.resetPos()
         this.starQueue.resetPool();
         this.isOver = false;
         this.firstJump = false;
@@ -147,12 +152,8 @@ export class GameCtrl extends Component {
         director.resume();
     }
 
-    getStar() {
-        this.result.addScore;
-        this.fzd.fly();
-    }
-
     createStar() {
+        console.log("createStar");
         this.starQueue.addPool();
     }
 
@@ -165,34 +166,32 @@ export class GameCtrl extends Component {
     }
 
     onBeginContact(selfCollider: Collider2D, otherCollider: Collider2D, contact: IPhysics2DContact | null) {
-        //console.log("collider node: ", otherCollider.node.isValid);
-        console.log("collider tag: ", otherCollider.tag);
+        console.log("onBeginContact");
         if (otherCollider.node.isValid){
             let colliderTag = otherCollider.tag;
             if (colliderTag == 1) { // ground
                 this.fzd.hitGround = true;
             }
             else if (colliderTag == 2){ //star
+                //this.collisionNotHandled = true;
                 //console.log("collider node: ", otherCollider.node.isValid);
+                let starObj = otherCollider.node.getParent().getComponent(Stars);
+                if (starObj.collisionHandled) {
+                    return;
+                }
+                starObj.collisionHandled = true;
                 setTimeout(function() {
-                    if (otherCollider && otherCollider.node.isValid) {
-                        // let sprite = otherCollider.getComponent(Sprite);
-                        // sprite.destroy();
+                    starObj.collisionHandled = false;
+                    if (otherCollider && otherCollider.node && otherCollider.node.isValid) {
                         console.log("destroy node");
-                        let curStar = otherCollider.node;
-                        // this.starQueue.pool.put(curStar);
                         otherCollider.node.destroy();
+                        this.fzd.fly();
+                        this.createStar();
                     }
-                }.bind(otherCollider), 0);
-                // if (otherCollider.node.isValid) {
-                //     otherCollider.node.destroy();
-                // }
+                }.bind(this), 0);
                 this.result.addScore();
-                this.fzd.fly();
-                //this.getStar();
-                setTimeout(function() {
-                    this.createStar();
-                }.bind(this), 0)
+                //this.fzd.fly();
+                setCurScore(this.result.currentScore);
             }
         }
     }

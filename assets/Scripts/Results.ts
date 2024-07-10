@@ -40,6 +40,7 @@ export class Results extends Component {
     }
 
     addScore() {
+        console.log("addScore: ", this.currentScore);
         this.updateScore(this.currentScore + 1);
     }
 
@@ -47,6 +48,15 @@ export class Results extends Component {
         this.maxScore = Math.max(this.maxScore, this.currentScore);
         
         this.topScore.string = 'High Score: ' + this.maxScore;
+        let camPosY = this.camera.node.getPosition().y;
+
+        let newTopScorePos = this.topScore.node.getPosition();
+        newTopScorePos.y = camPosY;
+        this.topScore.node.setPosition(newTopScorePos);
+
+        let newTryAgainPos = this.resultEnd.node.getPosition();
+        newTryAgainPos.y = camPosY - 100;
+        this.resultEnd.node.setPosition(newTryAgainPos);
 
         this.resultEnd.node.active = true;
         this.topScore.node.active = true;

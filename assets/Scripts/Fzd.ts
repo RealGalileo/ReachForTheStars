@@ -1,4 +1,4 @@
-import { _decorator, CCFloat, Component, Node, Vec3, Animation, tween, easing, Canvas } from 'cc';
+import { _decorator, CCFloat, Component, Node, Vec3, Vec2, Animation, tween, easing, Canvas, RigidBody2D } from 'cc';
 const { ccclass, property } = _decorator;
 
 @ccclass('Fzd')
@@ -38,7 +38,7 @@ export class Fzd extends Component {
     }
 
     resetFzd() {
-        this.fzdLocation = new Vec3(0, -338, 0);
+        this.fzdLocation = new Vec3(0, -336, 0);
 
         this.node.setPosition(this.fzdLocation);
         this.hitGround = false;
@@ -47,13 +47,16 @@ export class Fzd extends Component {
     fly() {
         this.fzdAnimation.stop();
 
-        tween(this.node.position)
-            .to(this.jumpDuration, new Vec3(this.node.position.x, this.node.position.y + this.jumpHeight, 0), {easing: 'smooth', 
-                onUpdate: (target: Vec3, ratio: number)=> {
-                    this.node.position = target;
-                }
-            })
-            .start();
+        // tween(this.node.position)
+        //     .to(this.jumpDuration, new Vec3(this.node.position.x, this.node.position.y + this.jumpHeight, 0), {easing: 'smooth', 
+        //         onUpdate: (target: Vec3, ratio: number)=> {
+        //             this.node.position = target;
+        //         }
+        //     })
+        //     .start();
+        let fzdBody = this.node.getComponent(RigidBody2D);
+        fzdBody.applyLinearImpulseToCenter(new Vec2(0, 280), true);
+
         
         this.fzdAnimation.play();
     }
@@ -62,7 +65,7 @@ export class Fzd extends Component {
         this.fzdAnimation.stop();
         if (!turnleft == this.isLeft) {
             let playClip = turnleft ? this.turnLeft.name : this.turnRight.name;
-            console.log("playClip: ", playClip);
+            // console.log("playClip: ", playClip);
             this.fzdAnimation.play(playClip);
             this.isLeft = !this.isLeft;
             // console.log("animate State: ", animState);
