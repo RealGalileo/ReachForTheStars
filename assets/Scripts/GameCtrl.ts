@@ -81,15 +81,6 @@ export class GameCtrl extends Component {
                 //console.log("locationX: ", mouseX);
                 let fzdCurPosX = this.fzd.node.getPosition().x;
                 //console.log("mouseX, fzdPosX: ", mouseX, fzdCurPosX);
-                if (fzdCurPosX > mouseX) {
-                    this.fzd.turnAround(true);
-                    //console.log("trunleft");
-                }
-                else {
-                    this.fzd.turnAround(false);
-                    //console.log("trunright");
-                }
-                
                 this.fzd.moveTo(Math.max(Math.min(mouseX, canvas.getComponent(UITransform).width / 2), - canvas.getComponent(UITransform).width / 2));
             }
         })
@@ -107,21 +98,6 @@ export class GameCtrl extends Component {
                 let mouseX = e.touch.getLocationX() - (canvas.getComponent(UITransform).width / 2);
                 let fzdCurPosX = this.fzd.node.getPosition().x;
                 //console.log("mouseX, fzdPosX: ", mouseX, fzdCurPosX);
-                if (fzdCurPosX > mouseX) {
-                    this.fzd.turnAround(true);
-                    //console.log("trunleft");
-                }
-                else {
-                    this.fzd.turnAround(false);
-                    //console.log("trunright");
-                }
-                // console.log("locationX: ", mouseX);
-                // if (mouseX > this.fzd.fzdLocation.x) {
-                //     this.fzd.moveHorizonal(10);
-                // }
-                // else if (mouseX < this.fzd.fzdLocation.x){
-                //     this.fzd.moveHorizonal(-10);
-                // }
                 this.fzd.moveTo(Math.max(Math.min(mouseX, canvas.getComponent(UITransform).width / 2), - canvas.getComponent(UITransform).width / 2));
             }
         })
@@ -154,7 +130,11 @@ export class GameCtrl extends Component {
 
     createStar() {
         console.log("createStar");
-        this.starQueue.addPool();
+        let numOfNewStar = Math.random() > 0.9 ? 2 : 1;
+        while (numOfNewStar > 0) {
+            this.starQueue.addPool();
+            numOfNewStar--;
+        }
     }
 
     contact() {
@@ -190,7 +170,6 @@ export class GameCtrl extends Component {
                     }
                 }.bind(this), 0);
                 this.result.addScore();
-                //this.fzd.fly();
                 setCurScore(this.result.currentScore);
             }
         }

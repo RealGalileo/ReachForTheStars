@@ -39,7 +39,6 @@ export class Fzd extends Component {
 
     resetFzd() {
         this.fzdLocation = new Vec3(0, -336, 0);
-
         this.node.setPosition(this.fzdLocation);
         this.hitGround = false;
     }
@@ -47,39 +46,19 @@ export class Fzd extends Component {
     fly() {
         this.fzdAnimation.stop();
 
-        // tween(this.node.position)
-        //     .to(this.jumpDuration, new Vec3(this.node.position.x, this.node.position.y + this.jumpHeight, 0), {easing: 'smooth', 
-        //         onUpdate: (target: Vec3, ratio: number)=> {
-        //             this.node.position = target;
-        //         }
-        //     })
-        //     .start();
         let fzdBody = this.node.getComponent(RigidBody2D);
-        fzdBody.applyLinearImpulseToCenter(new Vec2(0, 280), true);
+        fzdBody.applyLinearImpulseToCenter(new Vec2(0, 300), true);
 
-        
         this.fzdAnimation.play();
     }
 
-    turnAround(turnleft: boolean) { // false: turnRight, true: turnLeft
-        this.fzdAnimation.stop();
-        if (!turnleft == this.isLeft) {
-            let playClip = turnleft ? this.turnLeft.name : this.turnRight.name;
-            // console.log("playClip: ", playClip);
-            this.fzdAnimation.play(playClip);
-            this.isLeft = !this.isLeft;
-            // console.log("animate State: ", animState);
-        }
-    }
-
     moveTo(destination: number) {
-        //console.log("location: ", this.node.position);
         this.fzdAnimation.stop();
 
         tween(this.node.position)
             .to(this.jumpDuration, new Vec3(destination, this.node.position.y, 0), 
             {
-                easing:'smooth',
+                easing:'cubicInOut',
                 onUpdate:(target: Vec3, ratio: number)=>{
                     this.node.position = target; // add
                 }
@@ -87,16 +66,5 @@ export class Fzd extends Component {
             .start();
     }
 
-    moveHorizonal(direction: number) {
-        this.fzdAnimation.stop();
-
-        tween(this.node.position)
-            .to(this.jumpDuration, new Vec3(this.node.position.x + direction * this.horizonalSpeed, this.node.position.y, 0), {easing: 'smooth', 
-                onUpdate: (target: Vec3, ratio: number)=> {
-                    this.node.position = target;
-                }
-            })
-            .start();
-    }
 }
 

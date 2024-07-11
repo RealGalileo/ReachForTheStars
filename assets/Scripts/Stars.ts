@@ -63,8 +63,8 @@ export class Stars extends Component {
             randomY = random(- halfScreenSizeY + (3 + starsNum) * this.constPotion, - halfScreenSizeY + (4 + starsNum) * this.constPotion);
         }
         else {
-            let maxRandom = Math.max(100 + 250 * curScore / 100, 350);
-            randomY = random(40, maxRandom);
+            let minRandom = Math.min(40 + 250 * curScore / 100, 350)
+            randomY = random(minRandom, 351);
             randomY = highestStarY + randomY;
         }
 

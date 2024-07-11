@@ -79,26 +79,21 @@ export class Background extends Component {
         this.tempStartLocation3 = this.bg3.getPosition();
         const screenSize = screen.windowSize;
         const halfScreenSizeY = screenSize.y / 2;
-        const diff = Math.floor(cameraBaseline - halfScreenSizeY);
         const moveUp = this.bgHeight1 + this.bgHeight2 + this.bgHeight3;
-        //console.log("cameraBaseline, screenSize: ", cameraBaseline, screenSize);
 
 
         if (this.tempStartLocation1.y <= (cameraBaseline - halfScreenSizeY - this.bgHeight1)) {
             this.tempStartLocation1.y += moveUp;
-            console.log("resetbg1", this.tempStartLocation1);
             isReset = true;
         }
 
         if (this.tempStartLocation2.y <= (cameraBaseline - halfScreenSizeY - this.bgHeight2)) {
             this.tempStartLocation2.y += moveUp;
-            console.log("resetbg2", this.tempStartLocation2);
             isReset = true;
         }
 
         if (this.tempStartLocation3.y <= (cameraBaseline - halfScreenSizeY - this.bgHeight3)) {
             this.tempStartLocation3.y += moveUp;
-            console.log("resetbg3", this.tempStartLocation3);
             isReset = true;
         }
 
@@ -106,8 +101,6 @@ export class Background extends Component {
             this.ground.setPos(cameraBaseline - halfScreenSizeY);
             isReset = false;
         }
-
-        // console.log("bgs: ", this.tempStartLocation1, this.tempStartLocation2, this.tempStartLocation3);
 
         this.bg1.setPosition(this.tempStartLocation1);
         this.bg2.setPosition(this.tempStartLocation2);
